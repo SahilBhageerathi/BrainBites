@@ -1,0 +1,129 @@
+[
+  {
+    "id": "tango-easy-1",
+    "size": 6,
+    "difficulty": "easy",
+    "cells": [
+      {"row": 0, "col": 1, "value": "CIRCLE"},
+      {"row": 0, "col": 2, "value": "DIAMOND"},
+      {"row": 0, "col": 5, "value": "CIRCLE"},
+      {"row": 1, "col": 2, "value": "CIRCLE"},
+      {"row": 1, "col": 4, "value": "DIAMOND"},
+      {"row": 2, "col": 3, "value": "CIRCLE"},
+      {"row": 2, "col": 4, "value": "DIAMOND"},
+      {"row": 2, "col": 5, "value": "DIAMOND"},
+      {"row": 3, "col": 2, "value": "CIRCLE"},
+      {"row": 3, "col": 4, "value": "CIRCLE"},
+      {"row": 3, "col": 5, "value": "DIAMOND"},
+      {"row": 4, "col": 0, "value": "DIAMOND"},
+      {"row": 4, "col": 5, "value": "CIRCLE"},
+      {"row": 5, "col": 4, "value": "CIRCLE"},
+      {"row": 5, "col": 5, "value": "DIAMOND"}
+    ],
+    "edges": [
+      {"row": 3, "col": 4, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 2, "col": 0, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 0, "col": 3, "axis": "HORIZONTAL", "constraint": "MULTIPLY"},
+      {"row": 3, "col": 0, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 0, "col": 0, "axis": "HORIZONTAL", "constraint": "MULTIPLY"}
+    ]
+  },
+  {
+    "id": "tango-medium-1",
+    "size": 6,
+    "difficulty": "medium",
+    "cells": [
+      {"row": 1, "col": 0, "value": "CIRCLE"},
+      {"row": 1, "col": 2, "value": "CIRCLE"},
+      {"row": 1, "col": 3, "value": "DIAMOND"},
+      {"row": 2, "col": 3, "value": "CIRCLE"},
+      {"row": 2, "col": 4, "value": "DIAMOND"},
+      {"row": 3, "col": 1, "value": "CIRCLE"},
+      {"row": 4, "col": 2, "value": "CIRCLE"},
+      {"row": 5, "col": 3, "value": "CIRCLE"},
+      {"row": 5, "col": 4, "value": "CIRCLE"},
+      {"row": 5, "col": 5, "value": "DIAMOND"}
+    ],
+    "edges": [
+      {"row": 4, "col": 2, "axis": "HORIZONTAL", "constraint": "EQUAL"},
+      {"row": 3, "col": 2, "axis": "HORIZONTAL", "constraint": "MULTIPLY"}
+    ]
+  },
+  {
+    "id": "tango-hard-1",
+    "size": 6,
+    "difficulty": "hard",
+    "cells": [
+      {"row": 5, "col": 1, "value": "DIAMOND"},
+      {"row": 5, "col": 5, "value": "DIAMOND"}
+    ],
+    "edges": [
+      {"row": 2, "col": 1, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 0, "col": 4, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 1, "col": 0, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 0, "col": 0, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 4, "col": 2, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 0, "col": 5, "axis": "VERTICAL", "constraint": "EQUAL"}
+    ]
+  },
+  {
+    "id": "tango-easy-2",
+    "size": 6,
+    "difficulty": "easy",
+    "cells": [
+      {"row": 0, "col": 0, "value": "CIRCLE"},
+      {"row": 0, "col": 3, "value": "DIAMOND"},
+      {"row": 1, "col": 1, "value": "CIRCLE"},
+      {"row": 1, "col": 5, "value": "DIAMOND"},
+      {"row": 2, "col": 2, "value": "CIRCLE"},
+      {"row": 3, "col": 0, "value": "DIAMOND"},
+      {"row": 3, "col": 4, "value": "CIRCLE"},
+      {"row": 4, "col": 3, "value": "DIAMOND"},
+      {"row": 5, "col": 1, "value": "CIRCLE"},
+      {"row": 5, "col": 5, "value": "CIRCLE"}
+    ],
+    "edges": [
+      {"row": 1, "col": 2, "axis": "HORIZONTAL", "constraint": "EQUAL"},
+      {"row": 2, "col": 4, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 4, "col": 1, "axis": "HORIZONTAL", "constraint": "MULTIPLY"},
+      {"row": 0, "col": 4, "axis": "HORIZONTAL", "constraint": "EQUAL"}
+    ]
+  },
+  {
+    "id": "tango-medium-2",
+    "size": 6,
+    "difficulty": "medium",
+    "cells": [
+      {"row": 0, "col": 2, "value": "CIRCLE"},
+      {"row": 1, "col": 4, "value": "DIAMOND"},
+      {"row": 2, "col": 1, "value": "CIRCLE"},
+      {"row": 3, "col": 3, "value": "CIRCLE"},
+      {"row": 4, "col": 0, "value": "DIAMOND"},
+      {"row": 4, "col": 5, "value": "CIRCLE"},
+      {"row": 5, "col": 2, "value": "DIAMOND"}
+    ],
+    "edges": [
+      {"row": 1, "col": 3, "axis": "HORIZONTAL", "constraint": "MULTIPLY"},
+      {"row": 3, "col": 1, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 2, "col": 2, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 4, "col": 4, "axis": "HORIZONTAL", "constraint": "EQUAL"}
+    ]
+  },
+  {
+    "id": "tango-hard-2",
+    "size": 6,
+    "difficulty": "hard",
+    "cells": [
+      {"row": 2, "col": 3, "value": "CIRCLE"},
+      {"row": 4, "col": 2, "value": "DIAMOND"}
+    ],
+    "edges": [
+      {"row": 0, "col": 1, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 1, "col": 4, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 3, "col": 0, "axis": "HORIZONTAL", "constraint": "MULTIPLY"},
+      {"row": 3, "col": 3, "axis": "VERTICAL", "constraint": "EQUAL"},
+      {"row": 4, "col": 4, "axis": "VERTICAL", "constraint": "MULTIPLY"},
+      {"row": 5, "col": 1, "axis": "HORIZONTAL", "constraint": "EQUAL"}
+    ]
+  }
+]

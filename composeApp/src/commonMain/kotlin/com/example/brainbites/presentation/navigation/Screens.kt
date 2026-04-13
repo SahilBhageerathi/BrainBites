@@ -17,15 +17,18 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 
-sealed class Screens {
-
+sealed class Screen(val route: String) {
+    object Home : Screen("home")
+    object Games : Screen("puzzle")
+    object Growth : Screen("growth")
+    object Profile : Screen("settings")
 }
 
 object Routes {
-    const val HOME_TAB = "HOME"
-    const val GAME_TAB = "GAME"
-    const val GROWTH_TAB = "GROWTH"
-    const val SETTINGS_TAB = "SETTINGS"
+    const val HOME_TAB = "home"
+    const val GAME_TAB = "puzzle"
+    const val GROWTH_TAB = "growth"
+    const val SETTINGS_TAB = "settings"
 }
 
 data class BottomNavItem(

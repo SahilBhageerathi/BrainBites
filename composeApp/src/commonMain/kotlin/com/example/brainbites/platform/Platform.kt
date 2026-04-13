@@ -1,4 +1,4 @@
-package com.example.brainbites
+package com.example.brainbites.platform
 
 interface Platform {
     val name: String
