@@ -1,4 +1,4 @@
-package com.example.brainbites.presentation.common
+package com.example.brainbites.presentation.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -9,10 +9,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.example.brainbites.presentation.common.AppScaffold
+import com.example.brainbites.presentation.common.BrainBitesBottomBar
 import com.example.brainbites.presentation.navigation.NavItems
 import com.example.brainbites.presentation.navigation.Routes
 import com.example.brainbites.presentation.navigation.Screen1
-import com.example.brainbites.presentation.navigation.Screen2
 import com.example.brainbites.presentation.navigation.Screen3
 import com.example.brainbites.presentation.navigation.Screen4
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ fun HomeContainer() {
 
                 when (items[page].route) {
                     Routes.HOME_TAB -> Screen1()
-                    Routes.GAME_TAB -> Screen2()
+                    Routes.GAME_TAB -> TangoGameScreen()
                     Routes.GROWTH_TAB -> Screen3()
                     Routes.SETTINGS_TAB -> Screen4()
                 }

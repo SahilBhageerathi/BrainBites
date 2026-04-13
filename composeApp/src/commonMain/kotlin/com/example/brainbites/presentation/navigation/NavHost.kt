@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.brainbites.presentation.common.AppScaffold
+import com.example.brainbites.presentation.screens.TangoGameScreen
 
 @Composable
 fun AppNavGraph() {
@@ -45,7 +46,7 @@ fun AppNavGraph() {
             }
 
             composable(Routes.GAME_TAB) {
-                Screen2()
+                TangoGameScreen()
             }
 
             composable(Routes.GROWTH_TAB) {
