@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 
 import com.example.brainbites.di.appModule
-import com.example.brainbites.presentation.screens.HomeContainer
+import com.example.brainbites.presentation.navigation.AppNavGraph
 import org.koin.compose.KoinApplication
 
 @Composable
@@ -14,15 +14,11 @@ fun App() {
     MaterialTheme {
         KoinApplication(
             application = {
-                modules(
-                    appModule
-                )
+                modules(appModule)
             }
         ) {
-            HomeContainer()
+            AppNavGraph()
         }
-//        AppNavGraph()
-
     }
 }
 

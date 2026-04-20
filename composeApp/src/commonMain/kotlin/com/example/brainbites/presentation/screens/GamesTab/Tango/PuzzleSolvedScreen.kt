@@ -1,4 +1,4 @@
-package com.example.brainbites.presentation.screens
+package com.example.brainbites.presentation.screens.GamesTab.Tango
 
 import brainbites.composeapp.generated.resources.Res
 import brainbites.composeapp.generated.resources.close_icon
@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -44,9 +45,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.brainbites.platform.getDataStoreInstance
 import com.example.brainbites.presentation.viewModels.AbstractViewModel
-import com.example.brainbites.presentation.viewModels.TangoViewModel
+import com.example.brainbites.presentation.viewModels.Tango.TangoViewModel
 import org.koin.compose.koinInject
 
 private val ScreenBg = Color(0xFFF8F5FF)
@@ -373,7 +373,7 @@ private fun Modifier.dashedRoundedBorder(
                 color = color,
                 topLeft = Offset(strokePx / 2f, strokePx / 2f),
                 size = Size(size.width - strokePx, size.height - strokePx),
-                cornerRadius = androidx.compose.ui.geometry.CornerRadius(radiusPx, radiusPx),
+                cornerRadius = CornerRadius(radiusPx, radiusPx),
                 style = Stroke(
                     width = strokePx,
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(dashPx, gapPx), 0f),
