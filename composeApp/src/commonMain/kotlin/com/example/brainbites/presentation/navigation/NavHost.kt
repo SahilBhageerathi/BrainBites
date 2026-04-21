@@ -30,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.brainbites.presentation.common.AppScaffold
 import com.example.brainbites.presentation.common.BrainBitesBottomBar
+import com.example.brainbites.presentation.screens.GamesTab.Flow.FlowGameRoute
 import com.example.brainbites.presentation.screens.GamesTab.GamesListScreen
 import com.example.brainbites.presentation.screens.GamesTab.Tango.TangoGameScreen
 
@@ -43,7 +44,8 @@ fun AppNavGraph() {
         currentDestination?.hierarchy?.any { it.route == item.route } == true
     }?.route ?: Routes.HOME_TAB
 
-    val showBottomBar = currentDestination?.route != Routes.TANGO_GAME
+    val gameRoutes = setOf(Routes.TANGO_GAME, Routes.FLOW_GAME)
+    val showBottomBar = currentDestination?.route !in gameRoutes
 
     AppScaffold(
         bottomBar = {
@@ -77,10 +79,13 @@ fun AppNavGraph() {
                 Screen1()
             }
             composable(Routes.GAME_TAB) {
-                GamesListScreen(onPlayClick = { navController.navigate(Routes.TANGO_GAME) })
+                GamesListScreen(onPlayClick = { route -> navController.navigate(route) })
             }
             composable(Routes.TANGO_GAME) {
                 TangoGameScreen()
+            }
+            composable(Routes.FLOW_GAME) {
+                FlowGameRoute(navController)
             }
             composable(Routes.GROWTH_TAB) {
                 Screen3()

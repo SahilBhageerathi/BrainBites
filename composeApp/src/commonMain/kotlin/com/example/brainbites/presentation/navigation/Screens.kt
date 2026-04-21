@@ -30,6 +30,7 @@ object Routes {
     const val GROWTH_TAB = "growth"
     const val SETTINGS_TAB = "settings"
     const val TANGO_GAME = "tango_game"
+    const val FLOW_GAME = "flow_game"
 }
 
 data class BottomNavItem(

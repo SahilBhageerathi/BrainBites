@@ -50,11 +50,15 @@ kotlin {
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.navigation.compose)
             implementation(libs.compose.material.icons)
+            //koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
