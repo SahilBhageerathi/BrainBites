@@ -28,9 +28,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.brainbites.presentation.navigation.Routes
 
 @Composable
-fun GamesListScreen(onPlayClick: () -> Unit = {}) {
+fun GamesListScreen(onPlayClick: (String) -> Unit = {}) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +50,7 @@ fun GamesListScreen(onPlayClick: () -> Unit = {}) {
             )
         }
         items(puzzles) { puzzle ->
-            PuzzleCard(puzzle, onPlayClick = onPlayClick)
+            PuzzleCard(puzzle, onPlayClick = { onPlayClick(puzzle.route) })
         }
     }
 }
@@ -60,11 +61,12 @@ private data class PuzzleItem(
     val description: String,
     val difficulty: String,
     val difficultyColor: Color,
+    val route: String,
 )
 
 private val puzzles = listOf(
-    PuzzleItem("Tango", "Place circles and diamonds so no row or column repeats.", "Expert", Color(0xFF8B3A00)),
-//    PuzzleItem("Zip", "Connect all dots in a single path without crossing.", "Medium", Color(0xFF2E7D32)),
+    PuzzleItem("Tango", "Place circles and diamonds so no row or column repeats.", "Expert", Color(0xFF8B3A00), Routes.TANGO_GAME),
+    PuzzleItem("Zip", "Connect all dots in a single path without crossing.", "Medium", Color(0xFF2E7D32), Routes.FLOW_GAME),
 //    PuzzleItem("Queens", "Place queens so none attack each other.", "Hard", Color(0xFF1565C0)),
 //    PuzzleItem("Crossclimb", "Fill the ladder so each rung is a valid word.", "Easy", Color(0xFF6A1B9A)),
 )

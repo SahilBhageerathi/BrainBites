@@ -2,8 +2,10 @@ package com.example.brainbites.di
 
 import com.example.brainbites.platform.TimeProvider
 import com.example.brainbites.platform.createDataStore
+import com.example.brainbites.presentation.viewModels.Flow.FlowViewModel
 import com.example.brainbites.presentation.viewModels.Tango.TangoViewModel
 import com.example.brainbites.utils.GameTimer
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
@@ -20,4 +22,6 @@ val appModule = module {
     single {
         TangoViewModel(get(), get())
     }
+
+    viewModelOf(::FlowViewModel)
 }
