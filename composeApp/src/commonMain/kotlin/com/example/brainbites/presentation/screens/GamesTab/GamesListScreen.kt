@@ -67,8 +67,6 @@ private data class PuzzleItem(
 private val puzzles = listOf(
     PuzzleItem("Tango", "Place circles and diamonds so no row or column repeats.", "Expert", Color(0xFF8B3A00), Routes.TANGO_GAME),
     PuzzleItem("Zip", "Connect all dots in a single path without crossing.", "Medium", Color(0xFF2E7D32), Routes.FLOW_GAME),
-//    PuzzleItem("Queens", "Place queens so none attack each other.", "Hard", Color(0xFF1565C0)),
-//    PuzzleItem("Crossclimb", "Fill the ladder so each rung is a valid word.", "Easy", Color(0xFF6A1B9A)),
 )
 
 

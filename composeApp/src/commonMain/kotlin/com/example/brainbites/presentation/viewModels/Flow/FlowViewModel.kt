@@ -1,12 +1,11 @@
 package com.example.brainbites.presentation.viewModels.Flow
 
 import androidx.lifecycle.viewModelScope
-import com.example.brainbites.presentation.screens.GamesTab.Flow.CellPosition
-import com.example.brainbites.presentation.screens.GamesTab.Flow.FlowPuzzle
-import com.example.brainbites.presentation.screens.GamesTab.Flow.Hint
-import com.example.brainbites.presentation.screens.GamesTab.Flow.Wall
+import com.example.brainbites.domain.models.CellPosition
+import com.example.brainbites.domain.repo.FlowRepository
 import com.example.brainbites.presentation.viewModels.AbstractViewModel
 import com.example.brainbites.utils.AppLifecycleObserver
+import com.example.brainbites.utils.DispatcherProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,15 +13,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.collections.emptyList
 import kotlin.math.abs
 
-class FlowViewModel : AbstractViewModel(), AppLifecycleObserver {
-    private val _uiState = MutableStateFlow(
-        FlowUiState(
-            isLoading = false,
-            puzzle = loadPuzzle()
-        )
-    )
+class FlowViewModel(
+    private val repository: FlowRepository,
+    private val dispatchers: DispatcherProvider
+) : AbstractViewModel(), AppLifecycleObserver {
+    private val _uiState = MutableStateFlow(FlowUiState())
     val uiState: StateFlow<FlowUiState> = _uiState.asStateFlow()
 
     private val _uiEvent = MutableSharedFlow<FlowUiEvent>()
@@ -36,66 +35,37 @@ class FlowViewModel : AbstractViewModel(), AppLifecycleObserver {
 
     fun onAction(action: FlowAction) {
         when (action) {
-            is FlowAction.CellDragged -> { handleCellDragged(action.row,action.col) }
-            FlowAction.Undo -> { handleUndo() }
-            FlowAction.Reset -> { handleReset() }
+            is FlowAction.CellDragged -> {
+                handleCellDragged(action.row, action.col)
+            }
+
+            FlowAction.Undo -> {
+                handleUndo()
+            }
+
+            FlowAction.Reset -> {
+                handleReset()
+            }
         }
     }
 
     init {
-        val puzzle = loadPuzzle()
-        gridSize = puzzle.gridSize
-        hintMap = puzzle.hints.associate { (it.row to it.col) to it.value }
-        hintValueMap = puzzle.hints.associate { it.value to (it.row to it.col) }
-        wallSet = puzzle.walls.map { "${it.row},${it.col},${it.direction}" }.toSet()
-
-        _uiState.value = FlowUiState(
-            isLoading = false,
-            puzzle = puzzle
-        )
+        loadPuzzle()
     }
 
-    private fun loadPuzzle(): FlowPuzzle{
-        return FlowPuzzle(
-            id = 1,
-            gridSize = 6,
-            hints = listOf(
-                Hint(row = 3, col = 3, value = 1),
-                Hint(row = 1, col = 1, value = 2),
-                Hint(row = 2, col = 2, value = 3),
-                Hint(row = 4, col = 4, value = 4),
-                Hint(row = 3, col = 0, value = 5),
-                Hint(row = 2, col = 5, value = 6)
-            ),
-            walls = listOf(
-                // Top horizontal wall (row 1, cols 1-4)
-                Wall(0, 1, "bottom"),
-                Wall(0, 2, "bottom"),
-                Wall(0, 3, "bottom"),
-                Wall(0, 4, "bottom"),
-                // Left vertical wall (rows 1-4, col 1)
-                Wall(1, 0, "right"),
-                Wall(3, 0, "right"),
-                Wall(4, 0, "right"),
-                // Right vertical wall (rows 1-4, col 5)
-                Wall(1, 4, "right"),
-                Wall(2, 4, "right"),
-                Wall(4, 4, "right"),
-                // Bottom horizontal wall (row 4, cols 1-4)
-                Wall(4, 1, "bottom"),
-                Wall(4, 2, "bottom"),
-                Wall(4, 3, "bottom"),
-                Wall(4, 4, "bottom"),
-                // Inner walls
-                Wall(1,2,"bottom"),
-                Wall(1,3,"bottom"),
-                Wall(2,2,"right"),
-                Wall(3,2,"right"),
-                Wall(3,2,"bottom"),
-                Wall(3,3,"bottom"),
+    private fun loadPuzzle() {
+        viewModelScope.launch(dispatchers.io) {
+            val puzzle = repository.getAllPuzzles().first()
 
-                )
-        )
+            gridSize = puzzle.gridSize
+            hintMap = puzzle.hints.associate { (it.row to it.col) to it.value }
+            hintValueMap = puzzle.hints.associate { it.value to (it.row to it.col) }
+            wallSet = puzzle.walls.map { "${it.row},${it.col},${it.direction}" }.toSet()
+
+            withContext(dispatchers.main) {
+                _uiState.value = FlowUiState(isLoading = false, puzzle = puzzle)
+            }
+        }
     }
 
     private fun handleCellDragged(row: Int, col: Int) {

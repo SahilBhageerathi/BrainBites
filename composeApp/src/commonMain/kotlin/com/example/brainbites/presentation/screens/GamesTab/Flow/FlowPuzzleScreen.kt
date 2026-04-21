@@ -38,25 +38,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-
-data class Hint(val row: Int, val col: Int, val value: Int)
-data class Wall(
-    val row: Int,
-    val col: Int,
-    val direction: String  // "right", "bottom"
-)
-
-data class FlowPuzzle(
-    val id: Int,
-    val gridSize: Int,
-    val hints: List<Hint>,
-    val walls: List<Wall>
-)
-
-data class CellPosition(val row: Int, val col: Int)
-
-// ─── Color Theme ────────────────────────────────────────────────────────────
+import com.example.brainbites.domain.models.CellPosition
+import com.example.brainbites.domain.models.FlowPuzzle
+import com.example.brainbites.domain.models.Wall
 
 object FlowColors {
     val Background = Color(0xFFF7F7F8)

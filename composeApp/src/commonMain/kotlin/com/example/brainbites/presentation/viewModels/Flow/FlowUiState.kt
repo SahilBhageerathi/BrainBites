@@ -1,7 +1,7 @@
 package com.example.brainbites.presentation.viewModels.Flow
 
-import com.example.brainbites.presentation.screens.GamesTab.Flow.CellPosition
-import com.example.brainbites.presentation.screens.GamesTab.Flow.FlowPuzzle
+import com.example.brainbites.domain.models.CellPosition
+import com.example.brainbites.domain.models.FlowPuzzle
 
 data class FlowUiState (
     val isLoading: Boolean = true,
@@ -9,5 +9,5 @@ data class FlowUiState (
     val path: List<CellPosition> = emptyList(),
     val timerText: String = "0:00",
     val isSolved: Boolean = false,
-     val errorMsg : String? = null,
+    val errorMsg : String? = null,
 )
