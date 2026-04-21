@@ -93,7 +93,7 @@ class TangoViewModel(
         timer.start(scope)
         val nextPuzzle = puzzles?.get(lastIndex + 1)
         val board = nextPuzzle?.toGameBoard() ?: PuzzleFactory.createDefaultPuzzle()
-        _uiState.value = TangoUiState(board = board)
+        _uiState.value = TangoUiState(board = board, difficulty = nextPuzzle?.difficulty)
     }
 
     suspend fun loadPuzzlesJson(): String? {
@@ -113,7 +113,7 @@ class TangoViewModel(
                 timer.reset()
                 val nextPuzzle = it.getOrNull(lastIndex)
                 if (nextPuzzle != null) {
-                    _uiState.value = TangoUiState(board = nextPuzzle.toGameBoard())
+                    _uiState.value = TangoUiState(board = nextPuzzle.toGameBoard(), difficulty = nextPuzzle.difficulty)
                     Logger.d(TAG, "Playing next puzzle at index: $lastIndex")
                     onStartGame()
                 } else {

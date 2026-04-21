@@ -125,7 +125,9 @@ fun TangoGameScreen() {
 //            TopBar()
 
 //            Spacer(Modifier.height(12.dp))
-            DifficultyTimerCard(time = GameTimer.formatTime(timer))
+            DifficultyTimerCard(
+                difficulty = state.difficulty ?: "Hard", time = GameTimer.formatTime(timer)
+            )
 
             Card(
                 shape = RoundedCornerShape(24.dp),
