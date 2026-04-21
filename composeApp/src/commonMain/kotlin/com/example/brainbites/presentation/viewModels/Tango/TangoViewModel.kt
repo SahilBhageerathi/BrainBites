@@ -1,4 +1,4 @@
-package com.example.brainbites.presentation.viewModels
+package com.example.brainbites.presentation.viewModels.Tango
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -8,11 +8,10 @@ import com.example.brainbites.platform.Logger
 import com.example.brainbites.platform.getInt
 import com.example.brainbites.platform.putInt
 import com.example.brainbites.presentation.common.Stack
-import com.example.brainbites.presentation.models.Edge
-import com.example.brainbites.presentation.models.GameBoard
 import com.example.brainbites.presentation.models.PuzzleFactory
 import com.example.brainbites.presentation.models.TangoPuzzleResponse
 import com.example.brainbites.presentation.models.toGameBoard
+import com.example.brainbites.presentation.viewModels.AbstractViewModel
 import com.example.brainbites.utils.GameTimer
 import com.example.brainbites.utils.AppLifecycleObserver
 import kotlinx.coroutines.Job
@@ -23,28 +22,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-data class GameUiState(
-    val isLoading : Boolean = false,
-    val board: GameBoard = GameBoard(),
-    val violations: Set<Edge> = emptySet(),
-    val isSolved: Boolean = false,
-    val moveCount: Int = 0,
-)
-
 private const val TAG = "TangoViewModel"
+
 class TangoViewModel(
     val dataStore: DataStore<Preferences>,
     val timer: GameTimer
 ) : AbstractViewModel(), AppLifecycleObserver {
-    private val _uiState = MutableStateFlow(
-        GameUiState(isLoading = true)
-    )
-    val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(TangoUiState(isLoading = true))
+    val uiState: StateFlow<TangoUiState> = _uiState.asStateFlow()
     val scope = viewModelScope
     val timeElapsed = timer.elapsedTime
-    var lastIndex : Int = -1
-    var puzzles : List<TangoPuzzleResponse>? = null
-    val movesStack : Stack<Pair<Int, Int>> = Stack()
+    var lastIndex: Int = -1
+    var puzzles: List<TangoPuzzleResponse>? = null
+    val movesStack: Stack<Pair<Int, Int>> = Stack()
 
     init {
         scope.launch {
@@ -63,7 +53,7 @@ class TangoViewModel(
         val violations = newBoard.violations()
         val solved = newBoard.isSolved()
 
-        if(solved){
+        if (solved) {
             onGameSolved()
         }
 
@@ -103,7 +93,7 @@ class TangoViewModel(
         timer.start(scope)
         val nextPuzzle = puzzles?.get(lastIndex + 1)
         val board = nextPuzzle?.toGameBoard() ?: PuzzleFactory.createDefaultPuzzle()
-        _uiState.value = GameUiState(board = board)
+        _uiState.value = TangoUiState(board = board)
     }
 
     suspend fun loadPuzzlesJson(): String? {
@@ -122,8 +112,8 @@ class TangoViewModel(
                 lastIndex++
                 timer.reset()
                 val nextPuzzle = it.getOrNull(lastIndex)
-                if(nextPuzzle != null){
-                    _uiState.value = GameUiState(board = nextPuzzle.toGameBoard())
+                if (nextPuzzle != null) {
+                    _uiState.value = TangoUiState(board = nextPuzzle.toGameBoard())
                     Logger.d(TAG, "Playing next puzzle at index: $lastIndex")
                     onStartGame()
                 } else {
@@ -137,8 +127,8 @@ class TangoViewModel(
         Logger.d(TAG, "Leaderboard clicked - feature not implemented yet")
     }
 
-    fun onUndoClick(){
-        if(movesStack.isEmpty()) return
+    fun onUndoClick() {
+        if (movesStack.isEmpty()) return
         val row = movesStack.peek().first
         val col = movesStack.peek().second
         movesStack.pop()

@@ -15,6 +15,7 @@ import com.example.brainbites.core.utils.AppConstants
 @Composable
 fun AppScaffold(
     bgColor: Color = scaffold_Bg_Color,
+    bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -29,7 +30,7 @@ fun AppScaffold(
                 onProfileClick = { /* navigate */ }
             )
         },
-
+        bottomBar = bottomBar,
     ) { padding ->
         content(padding)
     }

@@ -1,4 +1,4 @@
-package com.example.brainbites.presentation.screens
+package com.example.brainbites.presentation.screens.GamesTab.Tango
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -67,7 +67,7 @@ import com.example.brainbites.presentation.models.Edge
 import com.example.brainbites.presentation.models.EdgeAxis
 import com.example.brainbites.presentation.models.EdgeConstraint
 import com.example.brainbites.presentation.models.GameBoard
-import com.example.brainbites.presentation.viewModels.TangoViewModel
+import com.example.brainbites.presentation.viewModels.Tango.TangoViewModel
 import com.example.brainbites.utils.GameTimer
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
