@@ -1,0 +1,26 @@
+CREATE TABLE SolvedGamesEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    level INTEGER NOT NULL,
+    gameName TEXT NOT NULL,
+    time INTEGER NOT NULL
+);
+
+selectAll:
+SELECT * FROM SolvedGamesEntity;
+
+selectByName:
+SELECT * FROM SolvedGamesEntity
+WHERE gameName = ?;
+
+insertGame:
+INSERT INTO SolvedGamesEntity(level, gameName, time)
+VALUES (?, ?, ?);
+
+updateGame:
+UPDATE SolvedGamesEntity
+SET level = ?, gameName = ?, time = ?
+WHERE id = ?;
+
+deleteGame:
+DELETE FROM SolvedGamesEntity
+WHERE id = ?;

@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.viewModelScope
 import brainbites.composeapp.generated.resources.Res
+import com.example.brainbites.core.utils.AppConstants.TANGO_GAME_NAME
+import com.example.brainbites.domain.interfaces.SolvedGamesRepo
 import com.example.brainbites.platform.Logger
 import com.example.brainbites.platform.getInt
 import com.example.brainbites.platform.putInt
@@ -26,21 +28,29 @@ private const val TAG = "TangoViewModel"
 
 class TangoViewModel(
     val dataStore: DataStore<Preferences>,
-    val timer: GameTimer
+    val timer: GameTimer,
+    val solvedGamesRepo: SolvedGamesRepo
 ) : AbstractViewModel(), AppLifecycleObserver {
     private val _uiState = MutableStateFlow(TangoUiState(isLoading = true))
     val uiState: StateFlow<TangoUiState> = _uiState.asStateFlow()
     val scope = viewModelScope
     val timeElapsed = timer.elapsedTime
-    var lastIndex: Int = -1
+    var lastIndex: Int = 0
     var puzzles: List<TangoPuzzleResponse>? = null
     val movesStack: Stack<Pair<Int, Int>> = Stack()
 
     init {
         scope.launch {
             puzzles = getPuzzles()
-            lastIndex = dataStore.getInt("last_puzzle_index")
-            loadPuzzle(lastIndex + 1)
+            val totalPuzzles = puzzles?.size ?: 0
+            val savedIndex = dataStore.getInt("last_puzzle_index", default = 0)
+
+            lastIndex = if (totalPuzzles > 0) {
+                savedIndex.coerceIn(0, totalPuzzles - 1)
+            } else {
+                0
+            }
+            loadPuzzle(lastIndex)
         }
     }
     private var errorJob: Job? = null
@@ -81,17 +91,21 @@ class TangoViewModel(
 
     fun resetPuzzle() {
         errorJob?.cancel()
-        timer.reset()
-
-        loadPuzzle(lastIndex + 1)
+        loadPuzzle(lastIndex)
     }
 
     fun loadPuzzle(index: Int) {
-        Logger.d(TAG, "Loaded last puzzle index: $lastIndex")
+        Logger.d(TAG, "Loading puzzle at index: $index")
+        lastIndex = index
         movesStack.clear()
         timer.reset()
         timer.start(scope)
-        val nextPuzzle = puzzles?.get(lastIndex + 1)
+
+        val nextPuzzle = puzzles?.getOrNull(index)
+        if (nextPuzzle == null) {
+            Logger.d(TAG, "Puzzle at index $index not found.")
+        }
+
         val board = nextPuzzle?.toGameBoard() ?: PuzzleFactory.createDefaultPuzzle()
         _uiState.value = TangoUiState(board = board, difficulty = nextPuzzle?.difficulty)
     }
@@ -103,23 +117,22 @@ class TangoViewModel(
 
     suspend fun getPuzzles(): List<TangoPuzzleResponse>? {
         val jsonString = loadPuzzlesJson()
-        return Json.decodeFromString(jsonString ?: "[]")
+        return try {
+            Json.decodeFromString(jsonString ?: "[]")
+        } catch (e: Exception) {
+            Logger.e(TAG, "Error decoding puzzles: ${e.message}")
+            null
+        }
     }
 
     override fun onPlayNext() {
         scope.launch {
-            puzzles?.let {
-                lastIndex++
-                timer.reset()
-                val nextPuzzle = it.getOrNull(lastIndex)
-                if (nextPuzzle != null) {
-                    _uiState.value = TangoUiState(board = nextPuzzle.toGameBoard(), difficulty = nextPuzzle.difficulty)
-                    Logger.d(TAG, "Playing next puzzle at index: $lastIndex")
-                    onStartGame()
-                } else {
-                    Logger.d(TAG, "No more puzzles available at index: $lastIndex")
-                }
-            }
+            val total = puzzles?.size ?: 0
+            if (total == 0) return@launch
+
+            val nextIndex = (lastIndex + 1) % total
+            loadPuzzle(nextIndex)
+            dataStore.putInt("last_puzzle_index", nextIndex)
         }
     }
 
@@ -146,11 +159,23 @@ class TangoViewModel(
     }
 
     fun onGameSolved() {
+        val solveTime = timeElapsed.value
+        val solvedLevel = lastIndex
         scope.launch {
-            lastIndex++
-            dataStore.putInt("last_puzzle_index", lastIndex)
+            solvedGamesRepo.insertGame(
+                level = solvedLevel.toLong(),
+                gameName = TANGO_GAME_NAME,
+                time = solveTime
+            )
+
+            // Advance progress for NEXT session
+            val total = puzzles?.size ?: 0
+            if (total > 0) {
+                val nextIndex = (solvedLevel + 1) % total
+                dataStore.putInt("last_puzzle_index", nextIndex)
+            }
             onEndGame()
-            Logger.d(TAG, "Puzzle solved! Updated last puzzle index to: $lastIndex")
+            Logger.d(TAG, "Puzzle $solvedLevel solved!")
         }
     }
 

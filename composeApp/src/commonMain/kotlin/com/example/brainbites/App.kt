@@ -13,13 +13,7 @@ import org.koin.dsl.koinConfiguration
 @Preview
 fun App() {
     MaterialTheme {
-        KoinApplication(
-            configuration = koinConfiguration {
-                modules(appModules())
-            }
-        ) {
-            AppNavGraph()
-        }
+        AppNavGraph()
     }
 }
 
